@@ -8,25 +8,27 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
+const scoreboard = require('./controllers/scoreboard');
+const history = require('./controllers/history');
+const imagedb = require('./controllers/imagedb');
 
-
-const db = knex({
-  client: 'pg',
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  }
-});
-
-/* 
 
 const db = knex({
   client: 'pg',
   connection: {
     host : '127.0.0.1',
     user : 'postgres',
-    password : '',
+    password : 'incudy',
     database : 'test'
+  }
+});
+
+/* 
+const db = knex({
+  client: 'pg',
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
   }
 });
 */
@@ -45,8 +47,10 @@ app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) })
 app.put('/image', (req, res) => { image.handleImage(req, res, db) })
-
-
+app.get('/score', (req, res) => { scoreboard.showScoreboard(db, req, res) })
+app.get('/history', (req, res) => { history.showImageHistory(db, req, res) })
+app.put('/imagedb', (req, res) => { imagedb.sendImage(db, req, res) })
+ 
 
 app.listen(process.env.PORT || 3001, () => {
 	console.log('app is running');
@@ -63,7 +67,6 @@ app.listen(process.env.PORT || 3001, () => {
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon"
   },
   "author": "",
   "license": "ISC",
@@ -74,10 +77,8 @@ app.listen(process.env.PORT || 3001, () => {
     "express": "^4.17.1",
     "knex": "^0.17.6",
     "pg": "^7.11.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.19.1"
   }
 }
+
 
  */
